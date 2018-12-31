@@ -16,7 +16,7 @@ try:
     import mysql.connector
 except:
     from pip._internal import main
-    package = 'mysql-connector'
+    package = 'mysql-connector-python'
     main(['install', package, '--quiet'])
     import mysql.connector
 from mysql.connector import errorcode
