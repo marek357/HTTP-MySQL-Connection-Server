@@ -42,7 +42,7 @@ class CustomRequestHandler(http.server.BaseHTTPRequestHandler):
             'user': 'user',
             'password': 'password',
             'host': 'localhost',
-            'database': 'base'
+            'database': 'dbname'
 }
         
         def fail(self,message):
@@ -78,7 +78,22 @@ class CustomRequestHandler(http.server.BaseHTTPRequestHandler):
                 try:
                     connection = mysql.connector.connect(user=config['user'], password=config['password'],
                               host=config['host'],
-                              database=config['database'])
+                              database=config['database'],
+                              auth_plugin='caching_sha2_password')
+                    cursor = connection.cursor()
+                    if data_dict['type'] == 0:
+                        cursor.execute(data_dict['query'])
+                        a = ''
+                        for row in cursor:
+                            a += str(row)
+                        fail(self,'<html><head><title>success</title></head><body>'+str(a)+'</body></html>')
+                        skip = 1
+                        cursor.close()
+                        print('ok')
+                    elif data_dict['type'] == 1:
+                        print('ok')
+                    else:
+                        fail(self,'<html><head><title>failure</title></head><body>Wrong type of CRUD operation</body></html>')
                     connection.close()
                 except mysql.connector.Error as err:
                     if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
