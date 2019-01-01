@@ -11,7 +11,10 @@ Well, in its current version, it expects POST request with data in either JSON o
 # Type
 
 It's quite easy:
+
   0 - SELECT
+
   1 - [will very soon be] INSERT
+  
   
 Enjoy!
